@@ -7,13 +7,4 @@
 =======
 Подключение к Jira
 >>>>>>> 89faff9 ([200~<ignored text> <ISSUE_KEY> <ignored text> #<COMMAND> <optional COMMAND_ARGUMENTS>~)
-=======
-Подключение к Jira
-Настройка задач
->>>>>>> 86e78de (QAP-13 test)
-=======
-Подключение к Jira
->>>>>>> 89faff9 ([200~<ignored text> <ISSUE_KEY> <ignored text> #<COMMAND> <optional COMMAND_ARGUMENTS>~)
-=======
-Подключение к Jira
->>>>>>> 89faff9 ([200~<ignored text> <ISSUE_KEY> <ignored text> #<COMMAND> <optional COMMAND_ARGUMENTS>~)
+
