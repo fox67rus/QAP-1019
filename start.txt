@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 Подключение к Jira
 Настройка задач
-=======
-Подключение к Jira
->>>>>>> 89faff9 ([200~<ignored text> <ISSUE_KEY> <ignored text> #<COMMAND> <optional COMMAND_ARGUMENTS>~)
-
+Какая-то ошибка 
