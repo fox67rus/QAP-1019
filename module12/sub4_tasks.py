@@ -3,4 +3,5 @@
 numbers = '10 2 13 54 0 6'
 
 num_str = numbers.split()
+
 print("\n".join(num_str))
