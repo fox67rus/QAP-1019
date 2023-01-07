@@ -11,4 +11,6 @@ for visitor in range(1, number_of_tickets + 1):
         total_cost += 990
     else:
         total_cost += 1390
-print(total_cost * 0.9 if number_of_tickets > 3 else total_cost)
+
+total_cost = int(total_cost * 0.9 if number_of_tickets > 3 else total_cost)
+print(f'Сумма к оплате: {total_cost} рублей.')
