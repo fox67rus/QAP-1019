@@ -3,26 +3,38 @@
 # и наиболее длинное слово на английском языке.
 # В файле ожидается смешанный текст на двух языках — русском и английском.
 
+def is_english(text:str) -> bool:
+    """ Определяет на английском языке слово или нет """
+    pass
+
+def delete_special_char(text:str) -> str:
+    """ Удаляем все переносы и спецсимволы из текста text и возвращает текст без спецсимволов"""
+    marks = ['!', '(', ')', '-', ';', '?', ':', '\n', ',', '.', '«', '»']
+    for mark in marks:
+        text = text.replace(mark, '')
+    return text
+
+def prepare_text_from_file(file_):
+    """ Обрабатывает текст из файла """
+    pass
+
 
 # filename = input("Введите имя файла, например - en_rus.txt:\n")
 filename = 'en_rus.txt'
 all_words = []
-marks = ['!', '(', ')', '-', ';', '?', ':', '\n', ',', '.', '«', '»']
 
-with open(filename, encoding='utf-8') as myFile:
-    for line in myFile:
-        new_line = line.split(' ')  # list
 
-        for word in new_line:  # str
+with open(filename, encoding='utf-8') as file:
+    for line in file:
+        line = line.split(' ')  # list
+
+        for word in line:  # str
             word = word.lower()
             if not word.isalnum():
-                for mark in marks:
-                    word = word.replace(mark, '')
-            # print(f'{word=} {type(word)=}')
+                word = delete_special_char(word)
+
+        # пропускаем пустые слова
         if word:
             all_words.append(word)
 
-        # all_words += list(map(str.lower, word))
-
     print(all_words)
-    # all_words.append(line.replace('\n', '').split(' '))
