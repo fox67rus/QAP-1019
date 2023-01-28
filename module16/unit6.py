@@ -66,3 +66,10 @@ if __name__ == '__main__':
 #
 # Переопределили работу метода show_description: теперь он показывает более специфичное для класса описание.
 
+
+# Проверка типа объекта
+print('\nПроверка типа объектов:')
+print(isinstance("foo", str))
+print(isinstance(test_view_event, ItemViewEvent))
+print(isinstance(test_view_event, Event))
+print(isinstance("foo", object))
