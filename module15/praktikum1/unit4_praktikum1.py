@@ -45,16 +45,16 @@ def delete_special_char(text: str) -> str:
     return text
 
 
-def count_rep_words(words: list, min_number_char: int = 3) -> dict:
+def count_rep_words(words: list, word_length: int = 3) -> dict:
     """
     Считает количество повторений слов в списке, если слово длиннее определенного количество букв.
     :param words: Список слов
-    :param min_number_char: минимальное количество символов в слове
+    :param word_length: минимальное количество символов в слове
     :return: словарь вида 'слово': количество повторений в списке
     """
     count = {}  # для подсчета слов и их количества
     for word in words:
-        if len(word) > min_number_char:
+        if len(word) > word_length:
             if word in count:  # если слово уже встречалось, то увеличиваем его количество на 1
                 count[word] += 1
             else:
@@ -146,7 +146,7 @@ def main(textfile: str):
 if __name__ == '__main__':
     # filename = input("Введите имя файла, например - en_rus.txt:\n")
     # char_limit = input("Минимальное количество символов в слове: \n")
-    filename = 'en_rus.txt'
-    # filename = 'пустой.txt'
+    # filename = 'en_rus.txt'
+    filename = 'пустой.txt'
 
     main(filename)
