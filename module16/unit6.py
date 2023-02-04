@@ -22,6 +22,7 @@ eggs = Food(name='Eggs', category='food', quantity_in_stock=5)
 print(eggs.max_quantity)
 print(eggs.is_available())
 
+
 # Если мы назовем атрибут или метод так же, как он называется в родительском классе, он будет переопределен
 class Event:
     def __init__(self, timestamp=0, event_type='', session_id=''):
