@@ -24,4 +24,3 @@ class Circle:
 
     def get_area_circle(self):
         return pi * self.r ** 2
-
