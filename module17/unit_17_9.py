@@ -41,7 +41,7 @@ try:
     # 7 6 2 8 4 1 3 9 5 0
     num_array = list(map(int, input('Введите последовательность чисел через пробел: ').split()))
     search_element = int(input('Введите любое число: '))
-    print(num_array)
+
     qsort(num_array, 0, len(num_array) - 1)
     print(num_array)
     print(binary_search(num_array, search_element, 0, len(num_array) - 1))
