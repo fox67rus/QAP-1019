@@ -1,6 +1,5 @@
-
-print(round(11*2.5/3, 2))
-
-print(round(
-    (3.14159**2)/2))
-
+for a in range(1, 8):
+    for b in range(1, 8):
+        for c in range(1, 10):
+            if a + b + c == 13:
+                print(f'{a=}, {b=}, {c=}, {a * b * c=}')
