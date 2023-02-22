@@ -1,5 +1,3 @@
-# Ваша задача — выполнить все запросы (GET, POST, DELETE, PUT) и
-# напечатать при помощи команды print ответы запросов.
 import requests
 
 base_url = f'https://petstore.swagger.io/v2'
