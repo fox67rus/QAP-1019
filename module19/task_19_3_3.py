@@ -1,6 +1,6 @@
 import requests
 
-base_url = f'https://petstore.swagger.io/v2'
+base_url = 'https://petstore.swagger.io/v2'
 headers = {'accept': 'application/json'}
 
 
