@@ -136,3 +136,4 @@ dmypy.json
 # Confidencial
 /module18/settings.py
 
+/module21/config.py
