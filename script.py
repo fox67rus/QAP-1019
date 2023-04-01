@@ -1,19 +1,26 @@
-import functools
-
-def do_twice(func):
-  @functools.wraps(func)
-  def wrapper(*args, **kwargs):
-      func(*args, **kwargs)
-      return func(*args, **kwargs)
-  return wrapper
+import pytest
 
 
+@pytest.fixture()
+def request_fixture(request):
+    print(request.fixturename)  # название фикстуры
+    print(request.scope)  # её область видимости
+    print(request.function.__name__)  # название теста
+    print(request.cls)  # название класса
+    print(request.module.__name__)  # Название модуля
+    print(request.fspath)  # путь до файлика, из которого запущен наш тест
+    if request.cls:  # Последней строкой выводится информация о том, запущен ли наш тест из класса или нет.
+        return f"\n У теста {request.function.__name__} класс есть\n"
+    else:
+        return f"\n У теста {request.function.__name__} класса нет\n"
 
 
-@do_twice
-def t_twice(str):
-    print("Этот вызов возвращает строку {0}".format(str))
-    return "Done"
+def test_request_1(request_fixture):
+    print(request_fixture)
 
-print(t_twice.__name__)
-print(do_twice.__name__)
+
+class TestClassRequest:
+
+    def test_request_2(self, request_fixture):
+        print(request_fixture)
+
