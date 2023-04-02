@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 import requests
-from config import valid_email, valid_password
+from module21.config import valid_email, valid_password
 
 
 @pytest.fixture()
