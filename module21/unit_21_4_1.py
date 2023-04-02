@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 import requests
-from config import email, password
+from config import valid_email, valid_password
 
 
 @pytest.fixture()
@@ -18,7 +18,7 @@ def test_some_data(some_data):
 def get_key():
     # переменные email и password нужно заменить своими учетными данными
     response = requests.post(url='https://petfriends.skillfactory.ru/login',
-                             data={"email": email, "pass": password})
+                             data={"email": valid_email, "pass": valid_password})
     assert response.status_code == 200, 'Запрос выполнен неуспешно'
     assert 'Cookie' in response.request.headers, 'В запросе не передан ключ авторизации'
     return response.request.headers.get('Cookie')

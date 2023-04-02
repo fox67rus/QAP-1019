@@ -1,13 +1,13 @@
 import pytest
 import requests
 
-from module21.config import email, password
+from module21.config import valid_email, valid_password
 
 @pytest.fixture(scope="class")
 def get_key(request):
     # переменные email и password нужно заменить своими учетными данными
     response = requests.post(url='https://petfriends.skillfactory.ru/login',
-                             data={"email": email, "pass": password})
+                             data={"email": valid_email, "pass": valid_password})
     assert response.status_code == 200, 'Запрос выполнен неуспешно'
     assert 'Cookie' in response.request.headers, 'В запросе не передан ключ авторизации'
     print("\nreturn auth_key")
