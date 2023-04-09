@@ -1,24 +1,8 @@
-from datetime import datetime
-
 from module21.petFriendsTesting.api import PetFriends
 from module21.config import valid_email, valid_password
 import os
-import pytest
 
 pf = PetFriends()
-
-@pytest.fixture(autouse=True)
-def get_key():
-    # Запрашиваем ключ api и сохраняем в переменную auth_key
-    _, auth_key = pf.get_api_key(valid_email, valid_password)
-    return auth_key
-
-@pytest.fixture(autouse=True)
-def time_delta():
-    start_time = datetime.now()
-    yield
-    end_time = datetime.now()
-    print (f"\nТест шел: {end_time - start_time}")
 
 
 def test_get_api_key_for_valid_user(email=valid_email, password=valid_password):
@@ -46,7 +30,7 @@ def test_get_all_pets_with_valid_key(get_key, filter=''):
     assert len(result['pets']) > 0
 
 
-def test_add_new_pet_with_valid_data(get_key, name='Рыжик', animal_type='кот',
+def test_add_new_pet_with_valid_data(log, get_key, name='Рыжик', animal_type='кот',
                                      age='2', pet_photo='images/red.jpg'):
     """
     Проверяем что можно добавить питомца с корректными данными
@@ -247,7 +231,6 @@ def test_add_new_pet_without_photo_long_animal_type(get_key, name='Длинно�
     """
     Простое добавление питомца (без фото): порода - текст более 255 символов
     """
-
 
     # Добавляем питомца с длинным текстом в породе
     animal_type = 'Очень длинная порода testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttes' \
