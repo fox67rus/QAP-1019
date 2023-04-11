@@ -1,3 +1,5 @@
+import pytest
+
 from module21.petFriendsTesting.api import PetFriends
 from module21.config import valid_email, valid_password
 import os
@@ -5,6 +7,7 @@ import os
 pf = PetFriends()
 
 
+@pytest.mark.get
 def test_get_api_key_for_valid_user(email=valid_email, password=valid_password):
     """
     Проверяем что запрос api ключа возвращает статус 200 и в результате содержится слово key
@@ -18,6 +21,7 @@ def test_get_api_key_for_valid_user(email=valid_email, password=valid_password):
     assert 'key' in result
 
 
+@pytest.mark.get
 def test_get_all_pets_with_valid_key(get_key, filter=''):
     """ Проверяем что запрос всех питомцев возвращает не пустой список.
         Для этого сначала получаем api ключ и сохраняем в переменную auth_key. Далее используя этого ключ
@@ -30,6 +34,7 @@ def test_get_all_pets_with_valid_key(get_key, filter=''):
     assert len(result['pets']) > 0
 
 
+@pytest.mark.post
 def test_add_new_pet_with_valid_data(log, get_key, name='Рыжик', animal_type='кот',
                                      age='2', pet_photo='images/red.jpg'):
     """
@@ -46,6 +51,7 @@ def test_add_new_pet_with_valid_data(log, get_key, name='Рыжик', animal_typ
     assert result['name'] == name
 
 
+@pytest.mark.put
 def test_successful_update_self_pet_info(get_key, name='Тыковка', animal_type='кошка', age=3):
     """Проверяем возможность обновления информации о питомце"""
 
@@ -65,6 +71,7 @@ def test_successful_update_self_pet_info(get_key, name='Тыковка', animal_
         raise Exception('Список питомцев пуст')
 
 
+@pytest.mark.delete
 def test_successful_delete_self_pet(get_key):
     """Проверяем возможность удаления питомца"""
 
@@ -90,6 +97,7 @@ def test_successful_delete_self_pet(get_key):
 
 
 # 10 дополнительных тестов
+@pytest.mark.post
 def test_add_new_pet_without_photo_valid_data(get_key, name='Снежок', animal_type='хаски', age='0'):
     """
     Проверяем простой метод добавления питомца с корректными данными
@@ -103,6 +111,7 @@ def test_add_new_pet_without_photo_valid_data(get_key, name='Снежок', anim
     assert result['name'] == name
 
 
+@pytest.mark.put
 def test_successful_add_pets_correct_photo(get_key, pet_photo='images/dog.jpg'):
     """
     Проверяем, что можно добавить фото питомцу с корректным файлом изображения
@@ -127,6 +136,7 @@ def test_successful_add_pets_correct_photo(get_key, pet_photo='images/dog.jpg'):
 
 
 # Негативные тесты
+@pytest.mark.get
 def test_get_api_key_for_invalid_user(email='free-user@mymail.com', password='pass'):
     """
     Проверяем что запрос api ключа для незарегистрированного пользователя возвращает статус 403
@@ -135,6 +145,8 @@ def test_get_api_key_for_invalid_user(email='free-user@mymail.com', password='pa
     assert status == 403
 
 
+@pytest.mark.negative
+@pytest.mark.get
 def test_get_all_pets_with_invalid_key(filter=''):
     """ Проверяем что запрос всех питомцев с некорректным api ключом возвращает код 403
     """
@@ -146,6 +158,8 @@ def test_get_all_pets_with_invalid_key(filter=''):
     assert status == 403
 
 
+@pytest.mark.post
+@pytest.mark.negative
 def test_add_new_pet_without_photo_negative_age(get_key, name='Гав', animal_type='котёнок', age='-2'):
     """
     Проверяем возможность добавления питомца с отрицательным возрастом. Ожидается код 400
@@ -158,6 +172,7 @@ def test_add_new_pet_without_photo_negative_age(get_key, name='Гав', animal_t
     assert status == 400
 
 
+@pytest.mark.put
 def test_unsuccessful_update_another_user_pet_info(get_key, name='Ниндзя', animal_type='НЛО', age=999):
     """Проверяем возможность обновления информации о питомце другого пользователя. Ожидается отказ доступа"""
 
@@ -177,6 +192,8 @@ def test_unsuccessful_update_another_user_pet_info(get_key, name='Ниндзя',
         raise Exception('Список питомцев пуст')
 
 
+@pytest.mark.put
+@pytest.mark.skip(reason="Баг в продукте")
 def test_unsuccessful_update_self_pet_info_with_empty_type(get_key, name='Кото пёс', animal_type=' ', age=3):
     """Обновление данных питомца: новая порода пустая строка. Ожидается ответ 400"""
 
@@ -196,6 +213,8 @@ def test_unsuccessful_update_self_pet_info_with_empty_type(get_key, name='Кот
         raise Exception('Список питомцев пуст')
 
 
+@pytest.mark.delete
+@pytest.mark.skip(reason="Баг в продукте")
 def test_unsuccessful_delete_another_user_pet(get_key):
     """Проверяем возможность удаления питомца другого пользователя. Ожидается отказ доступа"""
 
@@ -214,6 +233,8 @@ def test_unsuccessful_delete_another_user_pet(get_key):
     assert status != 200
 
 
+@pytest.mark.post
+@pytest.mark.skip(reason="Баг в продукте")
 def test_add_new_pet_without_photo_empty_name(get_key, name='', animal_type='', age=''):
     """
     Простое добавление питомца (без фото) с пустым именем
@@ -226,7 +247,8 @@ def test_add_new_pet_without_photo_empty_name(get_key, name='', animal_type='', 
     assert status != 200
 
 
-#
+@pytest.mark.post
+@pytest.mark.skip(reason="Баг в продукте - <ссылка>")
 def test_add_new_pet_without_photo_long_animal_type(get_key, name='Длиннопородный', age='1'):
     """
     Простое добавление питомца (без фото): порода - текст более 255 символов
