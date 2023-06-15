@@ -13,6 +13,7 @@ class TestLoginStellarBurgers:
     def setup(self):
         self.user = 'kuzya@testmail.ru'
         self.password = '123456'
+        self.open()
 
     def open(self):
         self.driver = webdriver.Chrome()
@@ -30,13 +31,11 @@ class TestLoginStellarBurgers:
 
 
     def test_login_by_button_in_form(self):
-        self.open()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH,
              "//button[contains(text(),'Войти в аккаунт')]"))).click()
         self.login()
 
     def test_login_from_cabinet(self):
-        self.open()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(((By.XPATH,
             "//p[contains(text(),'Личный Кабинет')]")))).click()
         self.login()
@@ -45,7 +44,6 @@ class TestLoginStellarBurgers:
         fake_name = Faker().name()
         fake_email = Faker().email()
         fake_password = Faker().password()
-        self.open()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(
             (By.XPATH, "//button[contains(text(),'Войти в аккаунт')]"))).click()
         WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(
@@ -58,9 +56,9 @@ class TestLoginStellarBurgers:
                 (By.XPATH, "//input[@type='password']"))).send_keys(fake_password)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(
             (By.XPATH, "//button[contains(text(),'Зарегистрироваться')]"))).click()
+        # self.login()
 
-
-        # sleep(5) # плохой способ сделать задержку, чтобы увидеть заполнение данных
+        sleep(5) # плохой способ сделать задержку, чтобы увидеть заполнение данных
 
     def teardown(self):
         self.close()
