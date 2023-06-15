@@ -37,6 +37,48 @@
 //tagname[@attribute='value']
 Итоговый локатор: //div[@class=".col-sm-4 left"]/h2.
 
+## XPATHs tricks
+### Трюк № 1. Получение значения атрибутов
+Для получения значения атрибута ввести в консоль $x('//a[@data-panel="m-nav-panel-products"]/@href'). 
+Значение видно в раскрывающемся списке, в пункте nodeValue
+
+Для получения текста внутри тега использовать специальный атрибут /text()
+$x('//a[@data-panel="m-nav-panel-products"]/text()')
+
+### Трюк № 2. Поиск по содержимому в атрибутах и тексте
+Используется служебный указатель contains, который получает два параметра: 
+в каком атрибуте искать и что искать (после запятой). 
+
+- $x('//a[contains(text(), "Products")]') - Находит все теги ссылок, внутри которых есть текст "Products". 
+- $x('//div[contains(@class, "m-nav-panel")]') - Находит все div у которых в имени класса есть строчка "m-nav-panel". 
+- $x('//img[contains(@src, ".png")]') - Находит все png-картинки.
+
+
+### Трюк № 3. Поиск по нескольким атрибутам
+Используется слово and, значок атрибута @ и значение атрибута. При помощи слова or мы можем найти все элементы, 
+ у которых присутствует хотя бы один атрибут из указанных.
+$x('//div[@class="lb-xb-grid-wrap" and @style="margin-bottom:30px;"]') 
+$x('//div[@class="lb-xb-grid-wrap" or @style="margin-bottom:30px;"]')
+
+### Трюк № 4. Вниз и вверх по DOM
+Сначала укажем div , который содержит карту: $x('//div[@data-lb-comp="gi-map"]'). Затем мы можем указать последовательно всех предков до желаемой ссылки, и также можем сократить путь ещё раз, использовав двойной прямой слеш. Тем самым мы указываем, что тег после двойного следует искать в любом месте внутри тега-родителя с атрибутом data-lb-comp="gi-map".
+
+$x('//div[@data-lb-comp="gi-map"]//a') — такой XPath указывает на 5 элементов.
+
+Но внутри ссылки Learn More есть еще тег <i>. Если мы укажем его, то получим локатор, указывающий на 
+один элемент://div[@data-lb-comp="gi-map"]//a/i. Но ведь мы изначально хотели получить локатор для ссылки. 
+Теперь мы можем сделать это, просто вернувшись наверх по DOM-дереву при помощи команды .. (две точки подряд):  $x('//div[@data-lb-comp="gi-map"]//a/i/..').
+
+### Практика
+- document.getElementById('__BVID__10')
+- document.getElementById("inline-form-input-species")
+- document.getElementsByClassName("tail container-fluid")
+- $x('//div[@class="lb-tabs lb-tabs-minimal-text-dark-bg" and @style="background-color:#232f3e;" and @data-lb-comp="tabs" and @data-lb-comp-registered="true"]')
+- $$('.instagram.icon')
+- $x('//a[contains(text(), "О нас")]')
+- $x('//a[contains(@aria-label, "Go to page 1")]')
+- $x('//button[contains(text(), "без дома") and @class="btn btn btn-secondary wait"]')
+
 ## Дополнительно 
 ### Статьи по CSS:
 1. [Документация Mozilla](https://developer.mozilla.org/ru/docs/Web/CSS/CSS_%D0%A1%D0%B5%D0%BB%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D1%8B); 
