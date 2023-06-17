@@ -1,7 +1,7 @@
 from selenium import webdriver
 from time import sleep
 
-from selenium.webdriver import Keys
+from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -49,22 +49,38 @@ def test_tutu():
     driver = webdriver.Chrome()
     driver.get("https://www.tutu.ru/")
     assert "Tutu" in driver.title
-
     driver.find_element(By.XPATH, "//div[contains(text(),'Электрички')]").click()
     sleep(1)
-    assert WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.NAME, "st1")))
-    driver.find_element(By.NAME, "st1").send_keys("гагарин")
+    city_from = driver.find_element(By.NAME, 'st1')
+    city_from.clear()
+    city_from.send_keys("Гагарин")
+
+    WebDriverWait(driver, timeout=5).until(
+        EC.visibility_of_element_located((By.XPATH, "//*[text()='Гагарин (Бел. напр.)']"))
+    )
+
+
+    city_to = driver.find_element(By.NAME, 'st2')
+    city_to.clear()
+    city_to.send_keys("Вязьма")
     sleep(2)
-    driver.find_element(By.NAME, "st2").send_keys("вязьма")
-    sleep(2)
+
+    # date = driver.find_element(By.XPATH, "//input[@placeholder='Дата']")
+    # driver.implicitly_wait(5)
+    # ActionChains(driver).move_to_element(date).click(date).perform()
+    # date.click()
+
+
+
     # driver.find_element(By.XPATH, "//input[@placeholder='Дата']").clear()
     # driver.find_element(By.XPATH, "//input[@placeholder='Дата']").send_keys("16.06.2023, пт")
 
     # driver.find_element(By.XPATH, "//button[@data-ti='date_arrow_reduce']").click()
     # driver.find_element(By.XPATH, "//button[@data-ti='date_arrow_increase']").click()
-    sleep(2)
+
     # WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH, "//button[@data-handler='today']"))).click()
     # sleep(2)
     driver.find_element(By.TAG_NAME, "button").click()
     sleep(5)
     driver.quit()
+
