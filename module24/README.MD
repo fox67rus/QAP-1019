@@ -23,3 +23,40 @@
 [Список методов Selenium для веб-элементов](https://www.selenium.dev/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webelement.html)
 Расширенный набор методов библиотеки pytest-selenium для работы с веб-элементами [тут](https://selenium-python.readthedocs.io/api.html)
 
+## 24.6. Методы управления браузером и фикстуры
+### Фикстуры для Chrome
+```python
+import pytest
+@pytest.fixture
+def chrome_options(chrome_options):
+    chrome_options.binary_location = '/path/to/chrome'
+    chrome_options.add_extension('/path/to/extension.crx')
+    chrome_options.add_argument('--kiosk')
+    return chrome_options
+```
+Где:
+chrome_options.binary_location — путь к exe браузера (включая сам исполняемый файл).
+chrome_options.add_extension — включение дополнений браузера.
+Через метод chrome_options.add_argument() можно задавать другие параметры запуска браузера из [списка](https://peter.sh/experiments/chromium-command-line-switches/)
+
+Чтобы добавить более глубокий уровень логирования:
+```python
+import pytest
+@pytest.fixture
+def driver_args():
+    return ['--log-level=LEVEL']
+```
+
+Режим запуска без пользовательского интерфейса, с так называемым headless-режимом («без головы»)
+```python
+import pytest
+@pytest.fixture
+def chrome_options(chrome_options):
+    chrome_options.set_headless(True)
+    return chrome_options
+```
+Иногда нам нужно произвести какие-либо дополнительные действия с драйвером или браузером используя методы библиотеки 
+Selenium до или после тестов, не прибегая к заданию аргументов. Тогда мы должны создать свою фикстуру, использующую фикстуру Selenium.
+В нашем примере мы будем до теста задавать определённые размеры окна браузера, а после теста, в случае его падения, менять цвет фона для контрастности и делать скриншот. Цвет фона мы будем менять при помощи команды javascript, а исполняет эту команду метод browser.execute_script(). 
+Кроме того, у нас будут выведены в системную консоль логи из консоли веб-браузера (той, которая появляется при нажатии F12). 
+Для этого используется метод browser.get_log('browser').
