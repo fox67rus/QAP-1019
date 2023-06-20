@@ -1,6 +1,7 @@
 # Более сложный сценарий для проекта PetFriends.
 # Авторизация клиента, залогиниться и получить скриншот стартовой страницы.
 # run test:
+# cd module24
 # python -m pytest -v --driver Chrome --driver-path drivers\chromedriver.exe test_selenium_petfriends.py
 
 import time
