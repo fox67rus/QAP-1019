@@ -60,3 +60,56 @@ Selenium до или после тестов, не прибегая к зада�
 В нашем примере мы будем до теста задавать определённые размеры окна браузера, а после теста, в случае его падения, менять цвет фона для контрастности и делать скриншот. Цвет фона мы будем менять при помощи команды javascript, а исполняет эту команду метод browser.execute_script(). 
 Кроме того, у нас будут выведены в системную консоль логи из консоли веб-браузера (той, которая появляется при нажатии F12). 
 Для этого используется метод browser.get_log('browser').
+
+Для того, чтобы в нашей фикстуре мы узнали, как именно завершился тест (удачно или нет), 
+ы используем способ, который в официальных рекомендациях к pytest называется ["Making test result information available in fixtures".](https://docs.pytest.org/en/stable/example/simple.html) 
+Для этого мы добавляем вначале функцию pytest_runtest_makereport, которая добавляет к объекту request информацию о результатах теста. 
+Сейчас мы не будем подробно останавливаться на содержании этой функции, но оно стандартно и может быть использовано «как есть».
+Главное, что мы должны вынести для себя — это возможность использовать проверку переменной request.node.rep_call.failed. 
+Не забывайте добавлять объект request ко входящим параметрам вашей фикстуры.
+```python
+#content of file conftest.py
+
+import pytest
+import uuid
+
+
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_makereport(item, call):
+    # This function helps to detect that some test failed
+    # and pass this information to teardown:
+
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, "rep_" + rep.when, rep)
+    return rep
+
+@pytest.fixture
+def web_browser(request, selenium):
+
+    browser = selenium
+    browser.set_window_size(1400, 1000)
+
+    # Return browser instance to test case:
+    yield browser
+
+    # Do teardown (this code will be executed after each test):
+
+    if request.node.rep_call.failed:
+        # Make the screen-shot if test failed:
+        try:
+            browser.execute_script("document.body.bgColor = 'white';")
+
+            # Make screen-shot for local debug:
+            browser.save_screenshot('screenshots/' + str(uuid.uuid4()) + '.png')
+
+            # For happy debugging:
+            print('URL: ', browser.current_url)
+            print('Browser logs:')
+            for log in browser.get_log('browser'):
+                print(log)
+
+        except:
+            pass # just ignore any errors here
+```
+
