@@ -1,5 +1,4 @@
 # run test:
-# cd module25
 # python -m pytest -v --driver Chrome test_PF_25_5_1.py
 
 import pytest
