@@ -85,19 +85,18 @@ def test_my_pets_page():
             no_double_names_flag = False
     assert no_double_names_flag, "не у всех питомцев разные имена" # задание 4
 
+
     print(f'{pets_info_dict=}')
     # has_dupes = len(pets_info_dict) != len(set(pets_info_dict.values()))
+
     print(f'{pets_info_dict.values()=}')
-    print({v: [k for k in pets_info_dict if pets_info_dict[k] == v] for v in set(pets_info_dict.values())})
+    # print({v: [k for k in pets_info_dict if pets_info_dict[k] == v] for v in set(pets_info_dict.values())})
+
     # values = list(pets_info_dict.values())
     # if len(values) == len(set(values)):
     #     print("no duplicates")
     # else:
     #     print("duplicates")
-
-
-
-
 
 
 
