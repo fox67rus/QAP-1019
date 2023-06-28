@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 @pytest.fixture(autouse=True)
 def login():
     pytest.driver = webdriver.Chrome('..\drivers\chromedriver.exe')
-    pytest.driver.implicitly_wait(10)  # настройка времени неявных ожиданий
+
 
     # Устанавливаем разрешение экрана для браузера. На маленьком разрешении нет кнопки Мои питомцы
     pytest.driver.set_window_size(1400, 1000)
@@ -42,6 +42,7 @@ def test_my_pets_page():
     user_info = pytest.driver.find_element(By.CSS_SELECTOR,"div.task3.fill > div")
     expected_pets = int(user_info.text.split('\n')[1][-1])
 
+    pytest.driver.implicitly_wait(10)  # настройка времени неявных ожиданий
     actual_pets = WebDriverWait(pytest.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//tbody/tr')))
 
     assert expected_pets == len(actual_pets), "Присутствуют не все питомцы"
@@ -52,7 +53,7 @@ def test_my_pets_page():
     for img in range(len(pets_photos)):
         if pets_photos[img].get_attribute('src') != '':
             pets_with_photos += 1
-    assert pets_with_photos > expected_pets / 2, "Больше половины питомцев без фото"
+    assert pets_with_photos >= expected_pets / 2, "Больше половины питомцев без фото"
 
 
     pets_names = []
