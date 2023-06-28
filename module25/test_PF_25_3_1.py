@@ -58,7 +58,7 @@ def test_my_pets_page():
     for img in range(len(pets_photos)):
         if pets_photos[img].get_attribute('src') != '':
             pets_with_photos += 1
-    assert pets_with_photos > expected_pets / 2, "Больше половины питомцев без фото"  # задание 2
+    assert pets_with_photos >= expected_pets / 2, "Больше половины питомцев без фото"  # задание 2
 
     pets_names = []
     pets_list = []
