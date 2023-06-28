@@ -33,19 +33,21 @@ def login():
 
     pytest.driver.quit()
 
+
 def test_my_pets_page():
     pytest.driver.implicitly_wait(10)  # настройка времени неявных ожиданий
     pytest.driver.find_element(By.LINK_TEXT, 'Мои питомцы').click()
     assert pytest.driver.current_url == "https://petfriends.skillfactory.ru/my_pets"
 
-    user_info = pytest.driver.find_element(By.CSS_SELECTOR,"div.task3.fill > div")
+    user_info = pytest.driver.find_element(By.CSS_SELECTOR, "div.task3.fill > div")
     expected_pets = int(user_info.text.split('\n')[1][-1])
 
     actual_pets = WebDriverWait(pytest.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//tbody/tr')))
 
     assert expected_pets == len(actual_pets), "Присутствуют не все питомцы"
 
-    pets_photos = WebDriverWait(pytest.driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'th > img')))
+    pets_photos = WebDriverWait(pytest.driver, 10).until(
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'th > img')))
     print(len(pets_photos))
     pets_with_photos = 0
     for img in range(len(pets_photos)):
