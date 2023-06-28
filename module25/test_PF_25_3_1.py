@@ -47,60 +47,51 @@ def test_my_pets_page():
     expected_pets = int(user_info.text.split('\n')[1][-1])
     # print(f'{expected_pets=}')
 
-    actual_pets=pytest.driver.find_elements(By.XPATH, '//tbody/tr')
+    actual_pets = pytest.driver.find_elements(By.XPATH, '//tbody/tr')
+    # Проверяем что количество строк таблицы соответствует количеству питомцев в блоке статистики пользователя
     assert expected_pets == len(actual_pets), "Присутствуют не все питомцы" # задание 1
-    # print(f'{len(actual_pets)=}')
+
+    # print(f'{actual_pets=}')
 
     pets_photos = pytest.driver.find_elements(By.CSS_SELECTOR, 'th > img')
-    print(len(pets_photos))
+    # print(f'{len(pets_photos)=}')
     pets_with_photos = 0
     for img in range(len(pets_photos)):
         if pets_photos[img].get_attribute('src') != '':
             pets_with_photos += 1
     assert pets_with_photos > expected_pets / 2, "Больше половины питомцев без фото" # задание 2
 
-
     pets_names = []
-    pets_info_dict = {}
+    pets_list = []
     for i in range(len(actual_pets)):
         # print(actual_pets[i].text[:-2])
-        pet_info = actual_pets[i].text[:-2].split(' ')
-        assert len(pet_info) == 3, "не у всех питомцев есть имя, возраст и порода"  # задание 3
+        # print(actual_pets[i].text)
+        # pet_info = actual_pets[i].text[:-2].split(' ')
+        pet_info = actual_pets[i].text[:-2].split('\n')
+        assert len(pet_info[0].split()) == 3, "не у всех питомцев есть имя, возраст и порода"  # задание 3
+        print(f'{pet_info=}')
         pets_names.append(pet_info[0])
+        pets_list.append(" ".join(pet_info))
         # print(f'{pet_info=}')
-        pets_info_dict[i + 1] = pet_info
+        # print(f'{pets_names=}')
+    print(f'\n{pets_list=}')
 
-        # assert pet_info[0] != ''
-        # assert pet_info[1] != ''
-        # assert pet_info[2] != ''
-
-
-    duplicate_names = []
-    # print(f'{pets_names=}')
-    no_double_names_flag = True
-    for item in pets_names:
-        if item not in duplicate_names:
-            duplicate_names.append(item)
-        else:
-            no_double_names_flag = False
-    assert no_double_names_flag, "не у всех питомцев разные имена" # задание 4
+    pet_names = [elem.split()[0] for elem in pets_list]
+    print(f'\n{pet_names=}')
+    assert len(pet_names) == len(set(pet_names)), 'не у всех питомцев разные имена.' # задание 4
+    assert len(pets_list) == len(set(pets_list)), 'Есть повторяющиеся питомцы' # задание 5
 
 
-    print(f'{pets_info_dict=}')
-    # has_dupes = len(pets_info_dict) != len(set(pets_info_dict.values()))
+    # my_pets_table = pytest.driver.find_elements(By.ID, 'all_my_pets')
+    # print(f'{my_pets_table=}')
 
-    print(f'{pets_info_dict.values()=}')
-    # print({v: [k for k in pets_info_dict if pets_info_dict[k] == v] for v in set(pets_info_dict.values())})
+    # my_pets_list = str(*[elem.text for elem in my_pets_table]).split('\n')[1::2]
+    # print(f'{my_pets_list=}')
 
-    # values = list(pets_info_dict.values())
-    # if len(values) == len(set(values)):
-    #     print("no duplicates")
-    # else:
-    #     print("duplicates")
+    # pet_names = [elem.split()[0] for elem in my_pets_list]
+    # assert len(pet_names) == len(set(pet_names)), 'Имеются повторяющиеся имена'
 
-
-
-
+    # assert len(my_pets_list) == len(set(my_pets_list)), 'Имеются повторяющиеся питомцы'
 
     # assert images[i].get_attribute('src') != ''
     # assert descriptions[i].text != ''
@@ -108,9 +99,6 @@ def test_my_pets_page():
     # parts = descriptions[i].text.split(', ')
     # assert len(parts[0]) > 0
     # assert len(parts[1]) > 0
-
-    # actual_pets =
-
 
     # images = pytest.driver.find_elements(By.CSS_SELECTOR, 'tbody > tr > th > img')
     # descriptions = pytest.driver.find_elements(By.CSS_SELECTOR, '.card-deck .card-text')
