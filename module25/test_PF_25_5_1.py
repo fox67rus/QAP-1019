@@ -12,7 +12,6 @@ from selenium.webdriver.support import expected_conditions as EC
 def login():
     pytest.driver = webdriver.Chrome('..\drivers\chromedriver.exe')
 
-
     # Устанавливаем разрешение экрана для браузера. На маленьком разрешении нет кнопки Мои питомцы
     pytest.driver.set_window_size(1400, 1000)
 
@@ -29,7 +28,6 @@ def login():
 
     # Проверяем, что мы оказались на главной странице пользователя
     assert pytest.driver.find_element(By.TAG_NAME, "h1").text == "PetFriends"
-
 
     yield
 
